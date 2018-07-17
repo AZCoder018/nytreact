@@ -1,12 +1,11 @@
-// Require our dependecies
+//Require dependecies
 require('dotenv').config()
 var express = require("express");
 var mongoose = require("mongoose");
-var bluebird = require("bluebird");
 var bodyParser = require("body-parser");
 var routes = require("./routes/routes");
 
-// Set up a default port, configure mongoose, configure our middleware
+//Set up a default port, configure mongoose and middleware
 var PORT = process.env.PORT || 3000;
 mongoose.Promise = bluebird;
 var app = express();
@@ -15,7 +14,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 app.use("/", routes);
 
-// heroku will supply this MONGODB_URI if configured with heroku addons:create mongolab
+//Establish Heroku connection and MongoDB database on Heroku
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI);
 } else {
@@ -24,7 +23,7 @@ if (process.env.MONGODB_URI) {
 
 var db = mongoose.connection;
 
-// Show any mongoose errors
+//Show mongoose errors
 db.on("error", function(error) {
     console.log("Mongoose Error: ", error);
 });
